@@ -30,7 +30,7 @@ expressApp.get('/', function (req, res, next) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-expressApp.set('port', 4000)
+expressApp.set('port', process.env.PORT ||4000)
 expressApp.use(cors({ origin: '*' }))
 
 expressApp.use(function (req, res, next) {
@@ -48,7 +48,8 @@ expressApp.use(function (req, res, next) {
 })
 
 const httpServer = createServer(expressApp)
-httpServer.listen(4000, '0.0.0.0')
+// httpServer.listen(4000, '0.0.0.0')
+httpServer.listen(process.env.PORT || 4000, '0.0.0.0')
 httpServer.on('error', e => console.log('error'))
 httpServer.on('listening', () => console.log('listening.....'))
 const io = new Server(httpServer, {
@@ -164,7 +165,8 @@ const createWindow = () => {
         }
     })
 
-    mainWindow.loadURL('https://4267-165-225-242-247.ngrok.io/')
+    // mainWindow.loadURL('https://4267-165-225-242-247.ngrok.io/')
+    mainWindow.loadURL('https://remote-desktop-control-part-2-production.up.railway.app/')
 
     mainWindow.once('ready-to-show', () => {
         displays = screen.getAllDisplays()
