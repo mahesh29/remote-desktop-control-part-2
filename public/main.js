@@ -56,8 +56,6 @@ const io = new Server(httpServer, {
     origin: '*',
 })
 
-io.set('origins', '*:*');
-
 const connections = io.of('/remote-ctrl')
 
 connections.on('connection', socket => {
