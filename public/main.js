@@ -8,6 +8,7 @@ const {
 } = require('electron')
 const path = require('path')
 const robot = require('robotjs')
+const { mouse, straightTo, Point, Button } = require("@nut-tree/nut-js");
 
 const cors = require('cors')
 const express = require('express');
@@ -81,7 +82,7 @@ connections.on('connection', socket => {
         socket.broadcast.emit('selectedScreen', clientSelectedScreen)
     })
 
-    socket.on('mouse_move', ({
+    socket.on('mouse_move', async ({
         clientX, clientY, clientWidth, clientHeight,
     }) => {
         const { displaySize: { width, height }, } = clientSelectedScreen
@@ -91,11 +92,18 @@ connections.on('connection', socket => {
         const hostX = clientX * ratioX
         const hostY = clientY * ratioY
 
-        robot.moveMouse(hostX, hostY)
+        // robot.moveMouse(hostX, hostY)
+        // (async () => {
+        const target = new Point(hostX, hostY);
+        // await mouse.move(straightTo(target));
+        // await mouse.setPosition(target);
+        await mouse.move(mouse.setPosition(target));
+        // })();
     })
 
-    socket.on('mouse_click', ({ button }) => {
-        robot.mouseClick('left', false) // true means double-click
+    socket.on('mouse_click', async ({ button }) => {
+        // robot.mouseClick('left', false) // true means double-click
+         await mouse.click(Button.LEFT);
     })
 })
 
@@ -156,7 +164,7 @@ const createWindow = () => {
         }
     })
 
-    mainWindow.loadURL('https://e8e6-2607-fea8-bde2-400-755b-a04e-53f6-19fa.ngrok.io/')
+    mainWindow.loadURL('https://4267-165-225-242-247.ngrok.io/')
 
     mainWindow.once('ready-to-show', () => {
         displays = screen.getAllDisplays()
